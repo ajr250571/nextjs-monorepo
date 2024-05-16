@@ -78,9 +78,10 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <select className="select select-bordered select-sm" data-choose-theme>
+        <select className="select select-bordered select-xs" data-choose-theme>
           <option value="business">Oscuro</option>
           <option value="corporate">Claro</option>
+          <option value="retro">Retro</option>
         </select>
       </div>
     </div>

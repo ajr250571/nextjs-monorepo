@@ -1,3 +1,11 @@
+Video
+https://www.youtube.com/watch?v=qOAUm_rAE-E&t=2335s
+
+Bibliotecas
+Prisma ORM
+https://daisyui.com/
+https://www.radix-ui.com/icons
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
