@@ -1,11 +1,12 @@
 "use client";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import {
   EnvelopeClosedIcon,
   LockClosedIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   email: string;
@@ -13,13 +14,26 @@ type Inputs = {
 };
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+
+    if (!res?.ok) {
+      console.log(res);
+    }
+    router.push("/dashboard");
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2 w-auto">
