@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -13,8 +14,10 @@ export default function ProjectNewPage() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
+    const res = await axios.post("/api/project", data);
+    console.log(res);
   };
   return (
     <div className="container">

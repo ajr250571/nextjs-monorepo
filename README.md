@@ -1,6 +1,6 @@
 Video
 https://www.youtube.com/watch?v=qOAUm_rAE-E&t=2335s
-1:45
+2:05
 
 Bibliotecas
 Prisma ORM
