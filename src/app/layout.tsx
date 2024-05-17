@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import GlobalContext from "@/context/GlobalContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="business">
       <body className={inter.className}>
-        <main className="container mx-auto px-4">
-          <Navbar />
-          {children}
-        </main>
+        <GlobalContext>
+          <main className="container mx-auto px-4">
+            <Navbar />
+            {children}
+          </main>
+        </GlobalContext>
       </body>
     </html>
   );

@@ -6,6 +6,8 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
@@ -14,6 +16,7 @@ type Inputs = {
   password: string;
 };
 export default function RegisterForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,9 +24,19 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     const res = await axios.post("/api/auth/register", data);
-    console.log(res);
+    if (res.status === 201) {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: res.data.email,
+        password: data.password,
+      });
+      if (result?.error) {
+        console.log(result?.error);
+        return;
+      }
+      router.push("/dashboard");
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -22,7 +22,6 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     const res = await signIn("credentials", {
       redirect: false,
       email: data.email,
