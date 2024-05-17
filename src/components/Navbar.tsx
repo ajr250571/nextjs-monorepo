@@ -7,15 +7,14 @@ import { useSession, signOut } from "next-auth/react";
 import { EnterIcon, PersonIcon } from "@radix-ui/react-icons";
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     themeChange(false);
-    // 👆 false parameter is required for react project
   }, []);
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar p-0 bg-base-100 border-b-2 mb-2">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -77,7 +76,7 @@ export default function Navbar() {
         </div>
         <ul
           tabIndex={0}
-          className="menu menu-xs dropdown-content z-[1] shadow bg-base-300 w-52 items-center"
+          className="menu menu-xs dropdown-content z-[1] shadow bg-base-300 w-auto items-center"
         >
           {session && (
             <>
