@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -8,6 +9,8 @@ type Inputs = {
 };
 
 export default function ProjectNewPage() {
+  const router = useRouter();
+  const params = useParams();
   const {
     register,
     handleSubmit,
@@ -15,16 +18,26 @@ export default function ProjectNewPage() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    const res = await axios.post("/api/project", data);
-    console.log(res);
+    if (!params.projectId) {
+      const res = await axios.post("/api/project", data);
+      if (res.status === 201) {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } else {
+      const res = await axios.put(`/api/project/${params.projectId}`, data);
+      if (res.status === 200) {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    }
   };
   return (
     <div className="container">
       <div className="flex h-[calc(100vh-5rem)] w-auto items-center justify-center">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="text-2xl text-primary font-semibold">
-            Create Project
+            {params.projectId ? "Edit Project" : "Create Project"}
           </h1>
           <label className="form-control w-96 max-w-xs">
             <div className="label">
@@ -64,6 +77,14 @@ export default function ProjectNewPage() {
           <button className="btn btn-primary btn-sm w-full mt-2" type="submit">
             Save
           </button>
+          {params.projectId && (
+            <button
+              className="btn btn-error btn-sm w-full mt-2"
+              onClick={() => deleteProject(params.projectId)}
+            >
+              Delete
+            </button>
+          )}
         </form>
       </div>
     </div>
