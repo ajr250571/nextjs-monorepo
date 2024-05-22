@@ -1,7 +1,10 @@
 "use client";
+import { TrashIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 type Inputs = {
   title: string;
@@ -11,9 +14,11 @@ type Inputs = {
 export default function ProjectNewPage() {
   const router = useRouter();
   const params = useParams();
+
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
@@ -32,6 +37,24 @@ export default function ProjectNewPage() {
       }
     }
   };
+  const deleteProject = async (projectId: string) => {
+    const res = await axios.delete(`/api/project/${projectId}`);
+    console.log(res);
+    if (res.status === 200) {
+      toast.success("Proyecto Eliminado exitosamente.");
+      router.push("/dashboard");
+      router.refresh();
+    }
+  };
+  useEffect(() => {
+    if (params.projectId) {
+      axios.get(`/api/project/${params.projectId}`).then((res) => {
+        setValue("title", res.data.title);
+        setValue("description", res.data.description);
+      });
+    }
+  });
+
   return (
     <div className="container">
       <div className="flex h-[calc(100vh-5rem)] w-auto items-center justify-center">
@@ -74,17 +97,20 @@ export default function ProjectNewPage() {
               </div>
             )}
           </label>
-          <button className="btn btn-primary btn-sm w-full mt-2" type="submit">
-            Save
-          </button>
-          {params.projectId && (
-            <button
-              className="btn btn-error btn-sm w-full mt-2"
-              onClick={() => deleteProject(params.projectId)}
-            >
-              Delete
+          <div className="flex justify-between">
+            <button className="btn btn-primary btn-sm mt-2" type="submit">
+              Save
             </button>
-          )}
+            {params.projectId && (
+              <button
+                className="btn btn-error btn-sm mt-2"
+                onClick={() => deleteProject(params.projectId as string)}
+              >
+                <TrashIcon />
+                Delete
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </div>

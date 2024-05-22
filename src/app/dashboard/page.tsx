@@ -1,8 +1,8 @@
 import HeaderDashboard from "@/components/dashboard/HeaderDashboard";
 import prisma from "@/libs/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import ProjectCard from "@/components/projects/ProjectCard";
+import { authOptions } from "@/libs/authOptions";
 
 async function loadProjects() {
   const session = await getServerSession(authOptions);

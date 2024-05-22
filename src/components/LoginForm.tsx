@@ -1,12 +1,9 @@
 "use client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  EnvelopeClosedIcon,
-  LockClosedIcon,
-  PersonIcon,
-} from "@radix-ui/react-icons";
+import { EnvelopeClosedIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Inputs = {
   email: string;
@@ -27,11 +24,12 @@ export default function LoginForm() {
       email: data.email,
       password: data.password,
     });
-
     if (!res?.ok) {
-      console.log(res);
+      toast.warning("Login incorrecto, reintente.");
+    } else {
+      router.push("/dashboard");
+      router.refresh();
     }
-    router.push("/dashboard");
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
