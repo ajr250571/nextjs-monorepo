@@ -20,7 +20,8 @@ export default function LoginForm() {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/dashboard",
       email: data.email,
       password: data.password,
     });
